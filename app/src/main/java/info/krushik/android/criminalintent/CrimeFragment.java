@@ -12,12 +12,16 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.text.DateFormat;
+import java.util.Locale;
+
 public class CrimeFragment extends Fragment {
 
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
+    private DateFormat mDateFormat;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,8 +51,12 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+
+        mDateFormat = DateFormat.getDateInstance(DateFormat.FULL, Locale.ENGLISH); // Tuesday, Jul 22, 2015
+
         mDateButton = (Button) v.findViewById(R.id.crime_date);
-        mDateButton.setText(mCrime.getDate().toString());
+//        mDateButton.setText(mCrime.getDate().toString()); // временная метка
+        mDateButton.setText(mDateFormat.format(mCrime.getDate()));
         mDateButton.setEnabled(false);
 
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);

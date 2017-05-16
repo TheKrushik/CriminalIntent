@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class CrimeLab { //(singleton) класс - допускают создание только одного экземпляра
     private static CrimeLab sCrimeLab; // префикс s - статическая переменная
-    private List<Crime> mCrimes;
+    private List<Crime> mCrimes; //список объектов Crime
 
 //Чтобы создать синглетный класс, следует создать класс с закрытым конструктором и методом get().
 //Если экземпляр уже существует, то get() просто возвращает его.
@@ -26,7 +26,8 @@ public class CrimeLab { //(singleton) класс - допускают созда
     private CrimeLab(Context context) {
 //        mAppContext = appContext;
         mCrimes = new ArrayList<>(); // пустой список List объектов Crime
-        for (int i = 0; i < 100; i++) {
+
+        for (int i = 0; i < 100; i++) { //массив 100 однообразных объектов Crime
             Crime crime = new Crime();
             crime.setTitle("Crime #" + i);
             crime.setSolved(i % 2 == 0); // Для каждого второго объекта

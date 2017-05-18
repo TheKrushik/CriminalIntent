@@ -19,6 +19,7 @@ public class CrimeListFragment extends Fragment {
 
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private int mCurrentPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,9 +47,10 @@ public class CrimeListFragment extends Fragment {
 
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
-            mCrimeRecyclerView.setAdapter(mAdapter);
+            mCrimeRecyclerView.setAdapter(mAdapter); // создаем список
         } else {
-            mAdapter.notifyDataSetChanged();
+            mAdapter.notifyDataSetChanged(); // обновляем список
+//            mAdapter.notifyItemChanged(mCurrentPosition); // обновляем один элемент в списке
         }
     }
 
@@ -78,9 +80,10 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View v) {
 //            Toast.makeText(getActivity(), mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
-            // метод getActivity() для передачи активности-хоста как объекта Context
-//            Intent intent = new Intent(getActivity(), CrimeActivity.class);
-            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            mCurrentPosition = getLayoutPosition(); // сохраняем позицию списка в переменную
+
+            // Запуск активности // метод getActivity() для передачи активности-хоста как объекта Context
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
         }
     }

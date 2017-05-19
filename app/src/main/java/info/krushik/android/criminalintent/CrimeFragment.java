@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import java.text.DateFormat;
+
 import java.util.Date;
-import java.util.Locale;
 import java.util.UUID;
 
 public class CrimeFragment extends Fragment {
@@ -29,8 +29,8 @@ public class CrimeFragment extends Fragment {
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
+    private Button mTimeButton;
     private CheckBox mSolvedCheckBox;
-    private DateFormat mDateFormat;
 
     // получает UUID, создает пакет аргументов, создает экземпляр фрагмента,
     // а затем присоединяет аргументы к фрагменту.
@@ -74,11 +74,9 @@ public class CrimeFragment extends Fragment {
         });
 
 
-//        mDateFormat = DateFormat.getDateInstance(DateFormat.FULL, Locale.ENGLISH); // Tuesday, Jul 22, 2015
-
         mDateButton = (Button) v.findViewById(R.id.crime_date);
         updateDate();
-//        mDateButton.setText(mDateFormat.format(mCrime.getDate()));
+
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +87,9 @@ public class CrimeFragment extends Fragment {
                 dialog.show(manager, DIALOG_DATE);
             }
         });
+
+        mTimeButton = (Button) v.findViewById(R.id.crime_time);
+        updateTime();
 
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setChecked(mCrime.isSolved());
@@ -102,6 +103,8 @@ public class CrimeFragment extends Fragment {
 
         return v;
     }
+
+
 
     // Реакция на получение данных от диалогового окна
     @Override
@@ -118,6 +121,12 @@ public class CrimeFragment extends Fragment {
 
     // обновляем дату
     private void updateDate() {
-        mDateButton.setText(mCrime.getDate().toString());
+        mDateButton.setText(DateFormat.format("EEEE , MMM dd yyyy", mCrime.getDate()).toString()); // Tuesday, Jul 22, 2015
+//        mDateButton.setText(mCrime.getDate().toString());
+    }
+
+    // обновляем время
+    private void updateTime() {
+        mTimeButton.setText(mCrime.getDate().toString());
     }
 }

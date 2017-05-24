@@ -18,7 +18,7 @@ import java.util.GregorianCalendar;
 
 public class DatePickerFragment extends DialogFragment {
 
-    private static final String ARG_DATE = "date";
+    private static final String ARG_DATE = "date"; //аргумент для получения данных
     public static final String EXTRA_DATE = "info.krushik.android.criminalintent.date"; // помещаем дату возврата
 
     private DatePicker mDatePicker;
@@ -52,7 +52,7 @@ public class DatePickerFragment extends DialogFragment {
                 .setView(v) // назначаем представление диалоговому окну.
 //                .setView(dp) // вариант в коде без представления
                 .setTitle(R.string.date_picker_title)
-                .setPositiveButton(android.R.string.ok,
+                .setPositiveButton(android.R.string.ok, //кнопка и слушатель
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

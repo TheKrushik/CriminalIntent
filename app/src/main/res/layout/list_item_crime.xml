@@ -25,9 +25,17 @@
         android:id="@+id/list_item_crime_date_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/list_item_crime_solved_check_box"
         android:layout_below="@id/list_item_crime_title_text_view"
+        android:layout_toLeftOf="@id/list_item_crime_solved_check_box"
         android:padding="4dp"
-        tools:text="Crime Title"
-        />
+        tools:text="Crime Date"/>
+
+    <TextView
+        android:id="@+id/list_item_crime_time_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/list_item_crime_date_text_view"
+        android:layout_toLeftOf="@id/list_item_crime_solved_check_box"
+        android:padding="4dp"
+        tools:text="Crime Time"/>
 </RelativeLayout>

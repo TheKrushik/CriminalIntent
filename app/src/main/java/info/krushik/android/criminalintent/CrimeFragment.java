@@ -24,7 +24,9 @@ public class CrimeFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
+    private static final String DIALOG_TIME = "DialogTime";
     private static final int REQUEST_DATE = 0; // константа для кода запроса
+    private static final int REQUEST_TIME = 1; // константа для кода запроса
 
     private Crime mCrime;
     private EditText mTitleField;
@@ -76,7 +78,6 @@ public class CrimeFragment extends Fragment {
 
         mDateButton = (Button) v.findViewById(R.id.crime_date);
         updateDate();
-
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +91,17 @@ public class CrimeFragment extends Fragment {
 
         mTimeButton = (Button) v.findViewById(R.id.crime_time);
         updateTime();
+        mTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                // вызов DatePickerFragment и передача ему временной метки
+                TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getTime());
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME); // назначаем CrimeFragment целевым фрагментом экземпляра TimePickerFragment
+                dialog.show(manager, DIALOG_TIME);
+            }
+        });
+
 
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setChecked(mCrime.isSolved());
@@ -117,6 +129,11 @@ public class CrimeFragment extends Fragment {
             mCrime.setDate(date);
             updateDate();
         }
+        if (requestCode == REQUEST_TIME) {
+            Date time = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+            mCrime.setTime(time);
+            updateTime();
+        }
     }
 
     // обновляем дату
@@ -127,6 +144,7 @@ public class CrimeFragment extends Fragment {
 
     // обновляем время
     private void updateTime() {
-        mTimeButton.setText(mCrime.getDate().toString());
+        mTimeButton.setText(DateFormat.format("HH:mm", mCrime.getTime()).toString()); // 17:11
+//        mTimeButton.setText(mCrime.getTime().toString());
     }
 }

@@ -27,12 +27,18 @@ public class CrimeLab { //(singleton) класс - допускают созда
 //        mAppContext = appContext;
         mCrimes = new ArrayList<>(); // пустой список List объектов Crime
 
-        for (int i = 0; i < 100; i++) { //массив 100 однообразных объектов Crime
-            Crime crime = new Crime();
-            crime.setTitle("Crime #" + i);
-            crime.setSolved(i % 2 == 0); // Для каждого второго объекта
-            mCrimes.add(crime);
-        }
+// Генератор 100 crime
+//        for (int i = 0; i < 100; i++) { //массив 100 однообразных объектов Crime
+//            Crime crime = new Crime();
+//            crime.setTitle("Crime #" + i);
+//            crime.setSolved(i % 2 == 0); // Для каждого второго объекта
+//            mCrimes.add(crime);
+//        }
+    }
+
+//Добавление нового объекта Crime
+    public void addCrime(Crime c) {
+        mCrimes.add(c);
     }
 
     public List<Crime> getCrimes() {

@@ -14,7 +14,7 @@ public class CrimeLab { //(singleton) класс - допускают созда
 //Если экземпляр уже существует, то get() просто возвращает его.
 //Если экземпляр еще не существует, то get() вызывает конструктор для его создания.
 
-//методом get()
+//метод get()
     public static CrimeLab get(Context context) { //в методе get() конструктору CrimeLab передается параметр Context
         if (sCrimeLab == null) {
             sCrimeLab = new CrimeLab(context);

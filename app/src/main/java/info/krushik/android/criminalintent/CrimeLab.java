@@ -41,6 +41,13 @@ public class CrimeLab { //(singleton) класс - допускают созда
         mCrimes.add(c);
     }
 
+    //Удаление текущего объекта Crime
+    public void deleteCrime(Crime c) {
+        if (mCrimes.size() > 0) {
+            mCrimes.remove(c);
+        }
+    }
+
     public List<Crime> getCrimes() {
         return mCrimes; // возвращает List
     }

@@ -9,13 +9,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-
 
 import java.util.Date;
 import java.util.UUID;
@@ -48,6 +50,7 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true); //явно указываем FragmentManager что есть OptionsMenu
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
@@ -146,5 +149,25 @@ public class CrimeFragment extends Fragment {
     private void updateTime() {
         mTimeButton.setText(DateFormat.format("HH:mm", mCrime.getTime()).toString()); // 17:11
 //        mTimeButton.setText(mCrime.getTime().toString());
+    }
+
+    // создание меню в фрагменте
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_crime, menu);
+    }
+
+    //Реакция на выбор команды меню
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_remove_crime:
+                CrimeLab.get(getActivity()).deleteCrime(mCrime); // удаляет его в CrimeLab
+                getActivity().finish(); // возврат к предыдущей активности
+                return true;
+            default:
+                return super.onOptionsItemSelected(item); //вызывает реализацию суперкласса
+        }
     }
 }

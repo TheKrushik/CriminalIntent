@@ -116,8 +116,11 @@ public class CrimeListFragment extends Fragment {
     // задает подзаголовок панели инструментов
     private void updateSubtitle() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
-        int crimeCount = crimeLab.getCrimes().size();
-        String subtitle = getString(R.string.subtitle_format, crimeCount); //строка подзаголовка
+//        int crimeCount = crimeLab.getCrimes().size();
+//        String subtitle = getString(R.string.subtitle_format, crimeCount); //строка подзаголовка
+        int crimeSize = crimeLab.getCrimes().size();
+        String subtitle = getResources()
+                .getQuantityString(R.plurals.subtitle_plural, crimeSize, crimeSize);//Множественное число
 
         if (!mSubtitleVisible) { // отображение или скрытие подзаголовка
             subtitle = null;

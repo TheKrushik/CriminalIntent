@@ -21,6 +21,8 @@ import java.util.List;
 
 public class CrimeListFragment extends Fragment {
 
+    private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
+
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private int mCurrentPosition;
@@ -39,6 +41,10 @@ public class CrimeListFragment extends Fragment {
         //класс LinearLayoutManager размещает элементы в вертикальном списке.
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        if (savedInstanceState != null) {
+            mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE); //Сохранение признака видимости подзаголовка
+        }
+
         updateUI();
 
         return view;
@@ -48,6 +54,12 @@ public class CrimeListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateUI();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible); //Востановление признака видимости подзаголовка
     }
 
     // настраивает пользовательский интерфейс CrimeListFragment.

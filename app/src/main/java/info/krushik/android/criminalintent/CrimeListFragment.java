@@ -23,6 +23,7 @@ public class CrimeListFragment extends Fragment {
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
+    private TextView mCrimeEmpty;
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private int mCurrentPosition;
@@ -37,6 +38,7 @@ public class CrimeListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
+        mCrimeEmpty = (TextView) view.findViewById(R.id.crime_empty_text_view);
         mCrimeRecyclerView = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
         //класс LinearLayoutManager размещает элементы в вертикальном списке.
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -67,6 +69,12 @@ public class CrimeListFragment extends Fragment {
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
+
+        if (crimes.size() == 0) { // если список пустой
+            mCrimeEmpty.setVisibility(View.VISIBLE);
+        }else {
+            mCrimeEmpty.setVisibility(View.GONE);
+        }
 
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);

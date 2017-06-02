@@ -15,9 +15,15 @@ public class Crime {
 
     public Crime() {
 // Генерирование уникального идентификатора
-        mId = UUID.randomUUID();
+        this(UUID.randomUUID()); // возвращать объект Crime с соответствующим значением UUID
+//        mId = UUID.randomUUID(); ->db
+//        mDate = new Date();
+//        mTime = new Date();
+    }
+
+    public Crime(UUID id) {
+        mId = id;
         mDate = new Date();
-        mTime = new Date();
     }
 
     public UUID getId() {

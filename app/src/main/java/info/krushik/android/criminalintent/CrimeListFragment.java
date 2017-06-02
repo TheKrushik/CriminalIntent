@@ -160,7 +160,7 @@ public class CrimeListFragment extends Fragment {
             mTitleTextView.setText(mCrime.getTitle());
 //            mDateTextView.setText(mCrime.getDate().toString());
             mDateTextView.setText(DateFormat.format("yyyy MMM dd , EEEE", mCrime.getDate()).toString());
-            mTimeTextView.setText(DateFormat.format("HH:mm", mCrime.getTime()).toString());
+//            mTimeTextView.setText(DateFormat.format("HH:mm", mCrime.getTime()).toString());
             mSolvedCheckBox.setChecked(mCrime.isSolved());
         }
 

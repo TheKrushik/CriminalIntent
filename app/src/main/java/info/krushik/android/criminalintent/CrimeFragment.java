@@ -56,6 +56,12 @@ public class CrimeFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        CrimeLab.get(getActivity()).updateCrime(mCrime); // записаны в базу данных при завершении CrimeFragment
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
 
@@ -92,18 +98,18 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-        mTimeButton = (Button) v.findViewById(R.id.crime_time);
-        updateTime();
-        mTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager manager = getFragmentManager();
-                // вызов DatePickerFragment и передача ему временной метки
-                TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getTime());
-                dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME); // назначаем CrimeFragment целевым фрагментом экземпляра TimePickerFragment
-                dialog.show(manager, DIALOG_TIME);
-            }
-        });
+//        mTimeButton = (Button) v.findViewById(R.id.crime_time);
+//        updateTime();
+//        mTimeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FragmentManager manager = getFragmentManager();
+//                // вызов DatePickerFragment и передача ему временной метки
+//                TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getTime());
+//                dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME); // назначаем CrimeFragment целевым фрагментом экземпляра TimePickerFragment
+//                dialog.show(manager, DIALOG_TIME);
+//            }
+//        });
 
 
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
@@ -120,7 +126,6 @@ public class CrimeFragment extends Fragment {
     }
 
 
-
     // Реакция на получение данных от диалогового окна
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -132,11 +137,11 @@ public class CrimeFragment extends Fragment {
             mCrime.setDate(date);
             updateDate();
         }
-        if (requestCode == REQUEST_TIME) {
-            Date time = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
-            mCrime.setTime(time);
-            updateTime();
-        }
+//        if (requestCode == REQUEST_TIME) {
+//            Date time = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+//            mCrime.setTime(time);
+//            updateTime();
+//        }
     }
 
     // обновляем дату

@@ -11,7 +11,6 @@ import java.util.UUID;
 
 import info.krushik.android.criminalintent.database.CrimeBaseHelper;
 import info.krushik.android.criminalintent.database.CrimeCursorWrapper;
-import info.krushik.android.criminalintent.database.CrimeDbSchema;
 import info.krushik.android.criminalintent.database.CrimeDbSchema.CrimeTable;
 
 public class CrimeLab { //(singleton) класс - допускают создание только одного экземпляра

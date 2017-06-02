@@ -151,10 +151,10 @@ public class CrimeFragment extends Fragment {
     }
 
     // обновляем время
-    private void updateTime() {
-        mTimeButton.setText(DateFormat.format("HH:mm", mCrime.getTime()).toString()); // 17:11
-//        mTimeButton.setText(mCrime.getTime().toString());
-    }
+//    private void updateTime() {
+//        mTimeButton.setText(DateFormat.format("HH:mm", mCrime.getTime()).toString()); // 17:11
+////        mTimeButton.setText(mCrime.getTime().toString());
+//    }
 
     // создание меню в фрагменте
     @Override

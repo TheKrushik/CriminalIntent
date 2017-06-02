@@ -60,6 +60,11 @@ public class CrimeLab { //(singleton) класс - допускают созда
 //        if (mCrimes.size() > 0) {
 //            mCrimes.remove(c); // ->db
 //        }
+        String uuidString = c.getId().toString();
+
+        mDatabase.delete(CrimeTable.NAME,
+                CrimeTable.Cols.UUID + " = ?", // условие WHERE
+                new String[] { uuidString }); // значения аргументов в условии WHERE
     }
 
     //чтение всего списка преступлений

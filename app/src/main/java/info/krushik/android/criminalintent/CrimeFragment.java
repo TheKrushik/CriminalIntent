@@ -167,7 +167,7 @@ public class CrimeFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_item_remove_crime:
+            case R.id.menu_item_delete_crime:
                 CrimeLab.get(getActivity()).deleteCrime(mCrime); // удаляет его в CrimeLab
                 getActivity().finish(); // возврат к предыдущей активности
                 return true;

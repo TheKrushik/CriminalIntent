@@ -20,7 +20,7 @@
         <item quantity="other">%1$s crimes</item>
     </plurals>
 
-    <string name="remove_crime">Remove Crime</string>
+    <string name="delete_crime">Delete Crime</string>
     <string name="crime_empty">The list is empty</string>
 
 </resources>

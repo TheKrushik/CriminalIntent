@@ -2,7 +2,11 @@ package info.krushik.android.criminalintent;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
@@ -29,12 +33,14 @@ public class CrimeFragment extends Fragment {
     private static final String DIALOG_TIME = "DialogTime";
     private static final int REQUEST_DATE = 0; // константа для кода запроса
     private static final int REQUEST_TIME = 1; // константа для кода запроса
+    private static final int REQUEST_CONTACT = 1;
 
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
     private Button mTimeButton;
     private CheckBox mSolvedCheckBox;
+    private Button mSuspectButton;
     private Button mReportButton;
 
     // получает UUID, создает пакет аргументов, создает экземпляр фрагмента,
@@ -135,6 +141,24 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+//        pickContact.addCategory(Intent.CATEGORY_HOME); // Фиктивный код для проверки фильтра контактов
+        mSuspectButton = (Button) v.findViewById(R.id.crime_suspect);
+        mSuspectButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivityForResult(pickContact, REQUEST_CONTACT);
+            }
+        });
+        if (mCrime.getSuspect() != null) {
+            mSuspectButton.setText(mCrime.getSuspect());
+        }
+
+        // Защита от отсутствия контактных приложений
+        PackageManager packageManager = getActivity().getPackageManager();
+        if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {
+            mSuspectButton.setEnabled(false);
+        }
+
         return v;
     }
 
@@ -155,6 +179,26 @@ public class CrimeFragment extends Fragment {
 //            mCrime.setTime(time);
 //            updateTime();
 //        }
+        else if (requestCode == REQUEST_CONTACT && data != null) { // Получение имени контакта
+            Uri contactUri = data.getData();
+// Определение полей, значения которых должны быть возвращены запросом.
+            String[] queryFields = new String[]{ContactsContract.Contacts.DISPLAY_NAME};
+// Выполнение запроса - contactUri здесь выполняет функции условия "where"
+            Cursor c = getActivity().getContentResolver().query(contactUri, queryFields, null, null, null);
+            try {
+// Проверка получения результатов
+                if (c.getCount() == 0) {
+                    return;
+                }
+// Извлечение первого столбца данных - имени подозреваемого.
+                c.moveToFirst();
+                String suspect = c.getString(0);
+                mCrime.setSuspect(suspect);
+                mSuspectButton.setText(suspect);
+            } finally {
+                c.close();
+            }
+        }
     }
 
     // обновляем дату

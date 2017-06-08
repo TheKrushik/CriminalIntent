@@ -13,6 +13,8 @@ public class Crime {
     private Date mTime; // время преступления
     private boolean mSolved; //было ли преступление раскрыто
     private String mSuspect; // имя подозреваемого
+    private String mSuspectID;
+    private String mSuspectPhone;
 
     public Crime() {
 // Генерирование уникального идентификатора
@@ -72,5 +74,21 @@ public class Crime {
     }
     public void setSuspect(String suspect) {
         mSuspect = suspect;
+    }
+
+    public String getSuspectPhone() {
+        return mSuspectPhone;
+    }
+
+    public void setSuspectPhone(String suspectPhone) {
+        mSuspectPhone = suspectPhone;
+    }
+
+    public String getSuspectID() {
+        return mSuspectID;
+    }
+
+    public void setSuspectID(String suspectID) {
+        mSuspectID = suspectID;
     }
 }

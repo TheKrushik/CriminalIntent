@@ -246,11 +246,7 @@ public class CrimeFragment extends Fragment {
             Uri contactUri = data.getData();
             String[] queryFields = new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER};
 
-            Cursor c = getActivity().getContentResolver().query(contactUri,
-                    queryFields,
-                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                    new String[]{mCrime.getSuspectID()},
-                    null);
+            Cursor c = getActivity().getContentResolver().query(contactUri, queryFields, null, null, null);
             try {
 
                 if (c.getCount() == 0) {

@@ -1,7 +1,6 @@
 package info.krushik.android.criminalintent;
 
 
-import java.sql.Time;
 import java.util.Date;
 import java.util.UUID;
 
@@ -13,7 +12,6 @@ public class Crime {
     private Date mTime; // время преступления
     private boolean mSolved; //было ли преступление раскрыто
     private String mSuspect; // имя подозреваемого
-    private String mSuspectID;
     private String mSuspectPhone;
 
     public Crime() {
@@ -72,6 +70,7 @@ public class Crime {
     public String getSuspect() {
         return mSuspect;
     }
+
     public void setSuspect(String suspect) {
         mSuspect = suspect;
     }
@@ -84,11 +83,4 @@ public class Crime {
         mSuspectPhone = suspectPhone;
     }
 
-    public String getSuspectID() {
-        return mSuspectID;
-    }
-
-    public void setSuspectID(String suspectID) {
-        mSuspectID = suspectID;
-    }
 }

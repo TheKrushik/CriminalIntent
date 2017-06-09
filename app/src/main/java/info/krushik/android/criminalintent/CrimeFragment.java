@@ -37,10 +37,12 @@ public class CrimeFragment extends Fragment {
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
     private static final String DIALOG_TIME = "DialogTime";
+    private static final String DIALOG_ZOOM = "DialogZoom";
     private static final int REQUEST_DATE = 0; // константа для кода запроса
     private static final int REQUEST_TIME = 1; // константа для кода запроса
     private static final int REQUEST_CONTACT = 1;
     private static final int REQUEST_PHOTO = 2;
+    private static final int REQUEST_PHOTO_ZOOM = 8;
 
     private Crime mCrime;
     private File mPhotoFile; // Сохранение местонахождения файла фотографии
@@ -232,6 +234,16 @@ public class CrimeFragment extends Fragment {
 
         mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
         updatePhotoView();
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+
+                PhotoZoomFragment dialog = PhotoZoomFragment.newInstance(mPhotoFile);
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_PHOTO_ZOOM); // назначаем CrimeFragment целевым фрагментом экземпляра DatePickerFragment
+                dialog.show(manager, DIALOG_ZOOM);
+            }
+        });
 
         return v;
     }

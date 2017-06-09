@@ -83,4 +83,9 @@ public class Crime {
         mSuspectPhone = suspectPhone;
     }
 
+    //получения имени файла
+    public String getPhotoFilename() {
+        return "IMG_" + getId().toString() + ".jpg"; //имя файла, строится на основании id Crime.
+    }
+
 }

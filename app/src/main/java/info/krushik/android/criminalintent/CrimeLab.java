@@ -4,7 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,10 +15,11 @@ import info.krushik.android.criminalintent.database.CrimeBaseHelper;
 import info.krushik.android.criminalintent.database.CrimeCursorWrapper;
 import info.krushik.android.criminalintent.database.CrimeDbSchema.CrimeTable;
 
+//отвечает за все, что относится к долгосрочному хранению данных
 public class CrimeLab { //(singleton) класс - допускают создание только одного экземпляра
     private static CrimeLab sCrimeLab; // префикс s - статическая переменная
 
-//    private List<Crime> mCrimes; //список объектов Crime // ->db
+    //    private List<Crime> mCrimes; //список объектов Crime // ->db
     private Context mContext;
     private SQLiteDatabase mDatabase;
 
@@ -64,7 +67,7 @@ public class CrimeLab { //(singleton) класс - допускают созда
 
         mDatabase.delete(CrimeTable.NAME,
                 CrimeTable.Cols.UUID + " = ?", // условие WHERE
-                new String[] { uuidString }); // значения аргументов в условии WHERE
+                new String[]{uuidString}); // значения аргументов в условии WHERE
     }
 
     //чтение всего списка преступлений
@@ -94,7 +97,7 @@ public class CrimeLab { //(singleton) класс - допускают созда
 //        }
         CrimeCursorWrapper cursor = queryCrimes(
                 CrimeTable.Cols.UUID + " = ?",
-                new String[] { id.toString() }
+                new String[]{id.toString()}
         );
 
         try {
@@ -108,6 +111,15 @@ public class CrimeLab { //(singleton) класс - допускают созда
         }
     }
 
+    //Определение местонахождения файла фотографии
+    public File getPhotoFile(Crime crime) {
+        File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (externalFilesDir == null) { // проверяет наличие внешнего хранилища для сохранения данных
+            return null; // Если внешнее хранилище недоступно, getExternalFilesDir(String) возвращает null
+        }
+        return new File(externalFilesDir, crime.getPhotoFilename()); //возвращает объекты File, представляющие нужные места
+    }
+
     //Обновление записи
     public void updateCrime(Crime crime) {
         String uuidString = crime.getId().toString();
@@ -116,7 +128,7 @@ public class CrimeLab { //(singleton) класс - допускают созда
         mDatabase.update(CrimeTable.NAME, //имя таблицы
                 values, //объект ContentValues каждой обновляемой записи
                 CrimeTable.Cols.UUID + " = ?", // условие WHERE
-                new String[] { uuidString }); // значения аргументов в условии WHERE
+                new String[]{uuidString}); // значения аргументов в условии WHERE
     }
 
     // преобразовует объект Crime в ContentValues

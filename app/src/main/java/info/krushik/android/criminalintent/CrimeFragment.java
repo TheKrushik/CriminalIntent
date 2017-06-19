@@ -54,11 +54,19 @@ public class CrimeFragment extends Fragment {
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
     private Button mReportButton;
+    private Callbacks mCallbacks; //Добавление обратных вызовов
 
     private static final int REQUEST_SUSPECT_PHONE = 5;
     private Button mSuspectPhoneButton;
     private static final int REQUEST_CALL_SUSPECT = 6;
     private Button mCallSuspectButton;
+
+    /**
+     * Необходимый интерфейс для активности-хоста.
+     */
+    public interface Callbacks {
+        void onCrimeUpdated(Crime crime);
+    }
 
     // получает UUID, создает пакет аргументов, создает экземпляр фрагмента,
     // а затем присоединяет аргументы к фрагменту.
@@ -69,6 +77,12 @@ public class CrimeFragment extends Fragment {
         CrimeFragment fragment = new CrimeFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCallbacks = (Callbacks) activity;
     }
 
     @Override
@@ -87,6 +101,12 @@ public class CrimeFragment extends Fragment {
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
 
@@ -102,6 +122,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence c, int start, int before, int count) {
                 mCrime.setTitle(c.toString());
+                updateCrime(); //при изменении краткого описания
             }
 
             @Override
@@ -146,6 +167,7 @@ public class CrimeFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // Назначение флага раскрытия преступления
                 mCrime.setSolved(isChecked);
+                updateCrime(); //при изменении состояния раскрытия преступления
             }
         });
 
@@ -258,6 +280,8 @@ public class CrimeFragment extends Fragment {
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCrime.setDate(date);
+
+            updateCrime(); //при изменении даты
             updateDate();
         }
 //        if (requestCode == REQUEST_TIME) {
@@ -280,13 +304,12 @@ public class CrimeFragment extends Fragment {
                 c.moveToFirst();
                 String suspect = c.getString(0);
                 mCrime.setSuspect(suspect);
+                updateCrime(); //при изменении подозреваемого
                 mSuspectButton.setText(suspect);
             } finally {
                 c.close();
             }
-        }
-
-        else if (requestCode == REQUEST_SUSPECT_PHONE && data != null) {
+        } else if (requestCode == REQUEST_SUSPECT_PHONE && data != null) {
             Uri contactUri = data.getData();
             String[] queryFields = new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER};
 
@@ -303,11 +326,17 @@ public class CrimeFragment extends Fragment {
             } finally {
                 c.close();
             }
-        }
-
-        else if (requestCode == REQUEST_PHOTO) {
+        } else if (requestCode == REQUEST_PHOTO) {
+            updateCrime(); //при изменении фотографии
             updatePhotoView();
         }
+    }
+
+    //CrimeFragment в своей внутренней работе часто будет выполнять этот хитрый маневр из двух шагов:
+    // шаг влево, сохранить mCrime в CrimeLab. Шаг вправо, вызвать mCallbacks.onCrimeUpdated(Crime).
+    private void updateCrime() {
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
+        mCallbacks.onCrimeUpdated(mCrime);
     }
 
     // обновляем дату

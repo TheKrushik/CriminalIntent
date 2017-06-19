@@ -89,7 +89,7 @@ public class CrimeListFragment extends Fragment {
 
     // настраивает пользовательский интерфейс CrimeListFragment.
 // создает объект CrimeAdapter и назначает его RecyclerView.
-    private void updateUI() {
+    public void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
 

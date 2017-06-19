@@ -1,6 +1,7 @@
 package info.krushik.android.criminalintent;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,22 @@ public class CrimeListFragment extends Fragment {
     private CrimeAdapter mAdapter;
     private int mCurrentPosition;
     private boolean mSubtitleVisible; // признак видимости подзаголовка
+    private Callbacks mCallbacks; // хранения объекта, реализующего Callbacks
+
+    /**
+     * Обязательный интерфейс для активности-хоста.
+     * механизм вызова методов активности-хоста
+     * Неважно, какая активность является хостом, — если она реализует CrimeListFragment.Callbacks
+     */
+    public interface Callbacks { // интерфейс обратного вызова
+        void onCrimeSelected(Crime crime);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCallbacks = (Callbacks) activity; //задается ее значение
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +79,12 @@ public class CrimeListFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible); //Востановление признака видимости подзаголовка
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null; // сбрасывается ее значение
     }
 
     // настраивает пользовательский интерфейс CrimeListFragment.
@@ -109,8 +132,10 @@ public class CrimeListFragment extends Fragment {
             case R.id.menu_item_new_crime:
                 Crime crime = new Crime(); // создает новый объект Crime
                 CrimeLab.get(getActivity()).addCrime(crime); // добавляет его в CrimeLab
-                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
-                startActivity(intent); // запускает экземпляр CrimePagerActivity
+//                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
+//                startActivity(intent); // запускает экземпляр CrimePagerActivity
+                updateUI(); //содержимое списка также немедленно перезагружается после добавления нового преступления.
+                mCallbacks.onCrimeSelected(crime); // вызов выбора варианта интерфейса
                 return true;
             case R.id.menu_item_show_subtitle:
                 mSubtitleVisible = !mSubtitleVisible;
@@ -172,8 +197,9 @@ public class CrimeListFragment extends Fragment {
             mCurrentPosition = getLayoutPosition(); // сохраняем позицию списка в переменную
 
             // Запуск активности // метод getActivity() для передачи активности-хоста как объекта Context
-            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
-            startActivity(intent);
+//            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
+//            startActivity(intent);
+            mCallbacks.onCrimeSelected(mCrime); // вызов выбора варианта интерфейса
         }
     }
 
